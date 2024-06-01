@@ -41,7 +41,7 @@ export async function GET() {
   return NextResponse.json({ productorder }, { status: 200 });
 }
 
-export async function POST(req: NextResponse) {
+export async function POST(req: Request) {
   const data = await req.json();
   console.log(data);
   const payment_capture = 1;
