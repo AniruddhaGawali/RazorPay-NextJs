@@ -39,6 +39,14 @@ export async function POST(req: Request) {
       },
     });
 
+    await prisma.payment.create({
+      data: {
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+      },
+    });
+
     return NextResponse.json({ message: 'success' }, { status: 201 });
   } else {
     await prisma.transaction.update({
