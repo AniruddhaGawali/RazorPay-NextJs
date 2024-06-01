@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
 First, run the development server:
@@ -16,21 +14,64 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## APIs
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. `/api/order` POST Request
+    - to create a Razorpay order and add it into cart
 
-## Learn More
+2. `/api/order` GET Request
+    - to get all the orders
 
-To learn more about Next.js, take a look at the following resources:
+3. `/api/product` POST Request
+    - to add new product
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. `/api/product` GET Request
+    - to get all product list
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+5. `/api/payment-verfiy` POST Request
+    - to verify the payment
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Schema
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Product Table
+
+| Field       | Type     | Attributes                                                                 |
+|-------------|----------|----------------------------------------------------------------------------|
+| id          | String   | @id @default(auto()) @map("_id") @db.ObjectId                               |
+| name        | String   |                                                                            |
+| description | String   |                                                                            |
+| img         | String   |                                                                            |
+| price       | Float    |                                                                            |
+| createdAt   | DateTime | @default(now())                                                            |
+
+### Order Table
+
+| Field       | Type     | Attributes                                                                 |
+|-------------|----------|----------------------------------------------------------------------------|
+| id          | String   | @id @default(auto()) @map("_id") @db.ObjectId                               |
+| productId   | String   | @db.ObjectId                                                               |
+| quantity    | Int      |                                                                            |
+| totalAmount | Float    |                                                                            |
+| status      | String   | @default("pending")                                                        |
+| createdAt   | DateTime | @default(now())                                                            |
+| updatedAt   | DateTime | @updatedAt                                                                 |
+
+### Payment Table
+
+| Field               | Type   | Attributes                                                           |
+|---------------------|--------|----------------------------------------------------------------------|
+| id                  | String | @id @default(auto()) @map("_id") @db.ObjectId                         |
+| razorpay_order_id   | String |                                                                      |
+| razorpay_payment_id | String |                                                                      |
+| razorpay_signature  | String |                                                                      |
+
+### Transaction Table
+
+| Field     | Type     | Attributes                                                                 |
+|-----------|----------|----------------------------------------------------------------------------|
+| id        | String   | @id @default(auto()) @map("_id") @db.ObjectId                               |
+| orderId   | String   | @db.ObjectId                                                               |
+| amount    | Float    |                                                                            |
+| status    | String   | @default("pending")                                                        |
+| createdAt | DateTime | @default(now())                                                            |
